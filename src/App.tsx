@@ -1,10 +1,9 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import Posts from './components/Posts/Posts';
-import NotFound from './components/NotFound/NotFound';
-import Profile from './components/Profile/Profile';
-import Header from './components/Header/Header';
-
+import Posts from './components/Posts/Posts'
+import NotFound from './components/NotFound/NotFound'
+import Profile from './components/Profile/Profile'
+import Header from './components/Header/Header'
 
 function App() {
 	return (
@@ -19,4 +18,4 @@ function App() {
 	);
 }
 
-export default App;
+export default App

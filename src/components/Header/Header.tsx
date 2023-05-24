@@ -27,8 +27,8 @@ function Header({ }: Props) {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
-                                <Nav.Link><Link to='/'>List of posts</Link></Nav.Link>
-                                <Nav.Link><Link to='/aboutme'>About me</Link></Nav.Link>
+                                <Link to='/'>List of posts</Link>
+                                <Link to='/aboutme'>About me</Link>
                             </Nav>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
