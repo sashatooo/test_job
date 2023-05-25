@@ -11,7 +11,12 @@ function Comment(props: CommentProps) {
 
     return (
         <div>
-            { props.comment.email }
+            <div>
+                {props.comment.email}
+            </div>
+            <div>
+                {props.comment.body}
+            </div>
         </div>
     )
 }

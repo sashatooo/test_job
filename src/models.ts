@@ -12,3 +12,33 @@ export interface IComment {
     email: string
     body: string
 }
+
+type Geo = {
+    lat: string
+    lng: string
+}
+
+type Addres = {
+    street: string
+    suite: string
+    city: string
+    zipcode: string
+    geo: Geo
+}
+
+type Company = {
+    name: string
+    catchPhrase: string
+    bs: string
+}
+
+export interface IUser {
+    id: number
+    name: string
+    username: string
+    email: string
+    address: Addres
+    phone: string
+    website: string
+    company: Company
+}
