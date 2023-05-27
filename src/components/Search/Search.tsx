@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 
 type SearchProps = {
     setSearchTerm: Dispatch<SetStateAction<string>>
+    setIsSortPosts: Dispatch<SetStateAction<boolean>>
 }
 
 function Search(props: SearchProps) {
@@ -22,6 +23,7 @@ function Search(props: SearchProps) {
         props.setSearchTerm('')
         setPostTitle('')
     }
+
 
 
     return (
@@ -41,10 +43,11 @@ function Search(props: SearchProps) {
                 </Button>
             </InputGroup>
             <InputGroup className="p-2">
-                <Form.Check // prettier-ignore
+                <Form.Check 
                     type="switch"
                     id="custom-switch"
                     label="Switch to sort by title"
+                    onChange={() => {props.setIsSortPosts((prev) => !prev)}}
                 />
             </InputGroup>
         </>

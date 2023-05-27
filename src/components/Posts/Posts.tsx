@@ -17,11 +17,22 @@ type PropsType = {
 function Posts() {
 
 	const [posts, setPosts] = useState<IPost[]>([])															// почемуто рендерится чето много раз
+	const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
+	const [prevFilteredPosts, setPrevFilteredPosts] = useState<IPost[]>([])
 	const [searchTerm, setSearchTerm] = useState<string>('')
+	const [isSortPosts, setIsSortPosts] = useState<boolean>(false)
+
 	useEffect(() => {
 		fetchPosts()
 	}, [])
 
+	useEffect(() => {
+		filterPosts(searchTerm)
+	}, [posts, searchTerm])
+
+	useEffect(() => {
+		sortPosts()
+	}, [isSortPosts])
 
 	async function fetchPosts() {
 		const response = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts')
@@ -29,19 +40,41 @@ function Posts() {
 	}
 
 
-	const filteredPost = posts.filter(p => {
-		if (p.title.toUpperCase().includes(searchTerm.toUpperCase())) {
-			return p
+
+	const filterPosts = (searchTerm: string) => {
+		const filteredPosts = posts.filter((p) =>
+			p.title.toUpperCase().includes(searchTerm.toUpperCase())
+		)
+		setFilteredPosts(filteredPosts)
+	}
+
+
+
+
+	function sortPosts() {
+		if (isSortPosts) {
+			const sortedPosts = [...filteredPosts].sort(function (a, b) {
+				let nameA = a.title.toLowerCase(), nameB = b.title.toLowerCase()
+				if (nameA < nameB)
+					return -1
+				if (nameA > nameB)
+					return 1
+				return 0
+			})
+		setPrevFilteredPosts(filteredPosts)
+		setFilteredPosts(sortedPosts)
+		} else {
+			setFilteredPosts(prevFilteredPosts)
 		}
-	})
+	}
 
 
 
 	return (
 		<>
-			<Search setSearchTerm={setSearchTerm} />
+			<Search setSearchTerm={setSearchTerm} setIsSortPosts={setIsSortPosts} />
 			<Row xs={1} md={1} className="g-4">
-				{filteredPost.map((p, idx) => (
+				{filteredPosts.map((p, idx) => (
 					<Col key={idx}>
 						<Card className='m-2'>
 							<Card.Body>
