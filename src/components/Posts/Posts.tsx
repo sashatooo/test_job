@@ -18,7 +18,6 @@ function Posts() {
 
 	const [posts, setPosts] = useState<IPost[]>([])															// почемуто рендерится чето много раз
 	const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
-	const [prevFilteredPosts, setPrevFilteredPosts] = useState<IPost[]>([])
 	const [searchTerm, setSearchTerm] = useState<string>('')
 	const [isSortPosts, setIsSortPosts] = useState<boolean>(false)
 
@@ -28,11 +27,8 @@ function Posts() {
 
 	useEffect(() => {
 		filterPosts(searchTerm)
-	}, [posts, searchTerm])
+	}, [posts, searchTerm, isSortPosts])
 
-	useEffect(() => {
-		sortPosts()
-	}, [isSortPosts])
 
 	async function fetchPosts() {
 		const response = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts')
@@ -42,18 +38,11 @@ function Posts() {
 
 
 	const filterPosts = (searchTerm: string) => {
-		const filteredPosts = posts.filter((p) =>
+		let filteredPosts = posts.filter((p) =>
 			p.title.toUpperCase().includes(searchTerm.toUpperCase())
 		)
-		setFilteredPosts(filteredPosts)
-	}
-
-
-
-
-	function sortPosts() {
 		if (isSortPosts) {
-			const sortedPosts = [...filteredPosts].sort(function (a, b) {
+			filteredPosts = filteredPosts.sort(function (a, b) {
 				let nameA = a.title.toLowerCase(), nameB = b.title.toLowerCase()
 				if (nameA < nameB)
 					return -1
@@ -61,12 +50,13 @@ function Posts() {
 					return 1
 				return 0
 			})
-		setPrevFilteredPosts(filteredPosts)
-		setFilteredPosts(sortedPosts)
-		} else {
-			setFilteredPosts(prevFilteredPosts)
 		}
+		setFilteredPosts(filteredPosts)
 	}
+
+
+
+
 
 
 
