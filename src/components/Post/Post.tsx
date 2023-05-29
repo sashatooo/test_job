@@ -3,6 +3,7 @@ import { IComment, IPost } from '../../models'
 import Comment from '../Comment/Comment'
 import axios from 'axios'
 import Loader from '../Loader/Loader'
+import { getComments } from '../../api'
 
 interface PostProps {
     post: IPost 
@@ -21,7 +22,7 @@ function Post(props: PostProps) {
 
     async function fetchComments(id: number) {
         setLoading(true)
-        const response = await axios.get<IComment[]>(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
+        const response = await getComments(id)
         setComments(response.data)
         setTimeout(() => { setLoading(false) }, 500)
     }

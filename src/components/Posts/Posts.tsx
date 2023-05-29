@@ -1,13 +1,15 @@
-import axios from 'axios'
-import React, { FC, useEffect, useState } from 'react'
-import { IComment, IPost } from '../../models'
+import React, { useEffect, useState } from 'react'
+import { IPost } from '../../models'
 import Post from '../Post/Post'
-
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { Image } from 'react-bootstrap'
 import Search from '../Search/Search'
+import { useSelector, useDispatch } from 'react-redux'
+import { getPostsAC } from '../../Redux/actions/actonCreater'
+import { AppStateType } from '../../Redux/reducers'
+
 
 type PropsType = {
 
@@ -16,13 +18,15 @@ type PropsType = {
 
 function Posts() {
 
-	const [posts, setPosts] = useState<IPost[]>([])															// почемуто рендерится чето много раз
+
+	const posts = useSelector((store: AppStateType) => store?.postsComponent?.posts)
 	const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
 	const [searchTerm, setSearchTerm] = useState<string>('')
 	const [isSortPosts, setIsSortPosts] = useState<boolean>(false)
+	const dispath = useDispatch()
 
 	useEffect(() => {
-		fetchPosts()
+		dispath(getPostsAC())
 	}, [])
 
 	useEffect(() => {
@@ -30,19 +34,15 @@ function Posts() {
 	}, [posts, searchTerm, isSortPosts])
 
 
-	async function fetchPosts() {
-		const response = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts')
-		setPosts(response.data)
-	}
 
-
+	
 
 	const filterPosts = (searchTerm: string) => {
-		let filteredPosts = posts.filter((p) =>
+		let filteredPosts = posts.filter((p: any) =>
 			p.title.toUpperCase().includes(searchTerm.toUpperCase())
 		)
 		if (isSortPosts) {
-			filteredPosts = filteredPosts.sort(function (a, b) {
+			filteredPosts = filteredPosts.sort(function (a: any, b:any) {
 				let nameA = a.title.toLowerCase(), nameB = b.title.toLowerCase()
 				if (nameA < nameB)
 					return -1
