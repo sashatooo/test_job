@@ -7,8 +7,9 @@ import Row from 'react-bootstrap/Row'
 import { Image } from 'react-bootstrap'
 import Search from '../Search/Search'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPostsAC } from '../../Redux/actions/actonCreater'
+import { getPostsAC, setCurrentPageAC } from '../../Redux/actions/actonCreater'
 import { AppStateType } from '../../Redux/reducers'
+import Pagination from '../Pagination/Pagination'
 
 
 type PropsType = {
@@ -20,6 +21,9 @@ function Posts() {
 
 
 	const posts = useSelector((store: AppStateType) => store?.postsComponent?.posts)
+	const pageSize = useSelector((store: AppStateType) => store?.postsComponent?.pageSize)
+    const totalPostsCount = useSelector((store: AppStateType) => store?.postsComponent?.totalPostsCount)
+    const currentPage = useSelector((store: AppStateType) => store?.postsComponent?.currentPage)
 	const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
 	const [searchTerm, setSearchTerm] = useState<string>('')
 	const [isSortPosts, setIsSortPosts] = useState<boolean>(false)
@@ -33,7 +37,9 @@ function Posts() {
 		filterPosts(searchTerm)
 	}, [posts, searchTerm, isSortPosts])
 
-
+	function setCurrentPage(currentPage: number) {
+		dispath(setCurrentPageAC(currentPage))
+	}
 
 	
 
@@ -56,13 +62,14 @@ function Posts() {
 
 
 
-
+	
 
 
 
 	return (
 		<>
 			<Search setSearchTerm={setSearchTerm} setIsSortPosts={setIsSortPosts} />
+			<Pagination setCurrentPage={setCurrentPage} currentPage={currentPage} totalPostsCount={totalPostsCount} pageSize={pageSize} />
 			<Row xs={1} md={1} className="g-4">
 				{filteredPosts.map((p, idx) => (
 					<Col key={idx}>
