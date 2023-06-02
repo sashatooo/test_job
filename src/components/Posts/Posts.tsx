@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import { Image } from 'react-bootstrap'
 import Search from '../Search/Search'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPostsAC, setCurrentPageAC } from '../../Redux/actions/actonCreater'
+import { getPostsAC, setCurrentPageAC, setPortionNumberAC } from '../../Redux/actions/actonCreater'
 import { AppStateType } from '../../Redux/reducers'
 import Pagination from '../Pagination/Pagination'
 
@@ -22,12 +22,17 @@ function Posts() {
 
 	const posts = useSelector((store: AppStateType) => store?.postsComponent?.posts)
 	const pageSize = useSelector((store: AppStateType) => store?.postsComponent?.pageSize)
-    const totalPostsCount = useSelector((store: AppStateType) => store?.postsComponent?.totalPostsCount)
     const currentPage = useSelector((store: AppStateType) => store?.postsComponent?.currentPage)
+    const porsionSize = useSelector((store: AppStateType) => store?.postsComponent?.porsionSize)
+    const portionNumber = useSelector((store: AppStateType) => store?.postsComponent?.portionNumber)
+
+	const [showPosts, setShowPosts] = useState<IPost[]>([])
 	const [filteredPosts, setFilteredPosts] = useState<IPost[]>([])
 	const [searchTerm, setSearchTerm] = useState<string>('')
 	const [isSortPosts, setIsSortPosts] = useState<boolean>(false)
 	const dispath = useDispatch()
+
+	
 
 	useEffect(() => {
 		dispath(getPostsAC())
@@ -35,20 +40,27 @@ function Posts() {
 
 	useEffect(() => {
 		filterPosts(searchTerm)
-	}, [posts, searchTerm, isSortPosts])
+	}, [posts, searchTerm, isSortPosts, currentPage])
 
 	function setCurrentPage(currentPage: number) {
 		dispath(setCurrentPageAC(currentPage))
 	}
 
+	function setPortionNumber(portionNumber: number) {
+		dispath(setPortionNumberAC(portionNumber))
+	}
+
 	
 
 	const filterPosts = (searchTerm: string) => {
-		let filteredPosts = posts.filter((p: any) =>
+		let tempPosts=[]
+		let tempFilteredPosts = posts.filter((p: any) =>
 			p.title.toUpperCase().includes(searchTerm.toUpperCase())
 		)
+		
+		
 		if (isSortPosts) {
-			filteredPosts = filteredPosts.sort(function (a: any, b:any) {
+			tempFilteredPosts = tempFilteredPosts.sort(function (a: any, b:any) {
 				let nameA = a.title.toLowerCase(), nameB = b.title.toLowerCase()
 				if (nameA < nameB)
 					return -1
@@ -57,21 +69,26 @@ function Posts() {
 				return 0
 			})
 		}
-		setFilteredPosts(filteredPosts)
+		setFilteredPosts(tempFilteredPosts)
+
+		const leftBoundary = (currentPage === 1) ? 0 : (currentPage - 1) * pageSize
+		const rightBoundary = currentPage * pageSize
+		for(let i = leftBoundary; i < rightBoundary && i < tempFilteredPosts.length; i++) {
+			tempPosts.push(tempFilteredPosts[i]);
+		} 
+		console.log('2')
+		setShowPosts(tempPosts )
+	
 	}
 
-
-
 	
-
 
 
 	return (
 		<>
 			<Search setSearchTerm={setSearchTerm} setIsSortPosts={setIsSortPosts} />
-			<Pagination setCurrentPage={setCurrentPage} currentPage={currentPage} totalPostsCount={totalPostsCount} pageSize={pageSize} />
 			<Row xs={1} md={1} className="g-4">
-				{filteredPosts.map((p, idx) => (
+				{showPosts.map((p, idx) => (
 					<Col key={idx}>
 						<Card className='m-2'>
 							<Card.Body>
@@ -85,6 +102,13 @@ function Posts() {
 					</Col>
 				))}
 			</Row>
+			<Pagination 	setCurrentPage={setCurrentPage} 
+							currentPage={currentPage} 
+							filteredPosts={filteredPosts} 
+							pageSize={pageSize} 
+							porsionSize={porsionSize}
+							portionNumber={portionNumber} 
+							setPortionNumber={setPortionNumber}/>
 		</>
 	)
 }
