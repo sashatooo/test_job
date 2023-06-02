@@ -1,4 +1,9 @@
-import { GET_POSTS, GET_COMMENTS, SET_POSTS, SET_CURRENT_PAGE } from '../constants.js'
+import { 
+    GET_POSTS, 
+    GET_COMMENTS, 
+    SET_POSTS, 
+    SET_CURRENT_PAGE, 
+    SET_PORTION_NUMBER } from '../constants.js'
 
 export const getPostsAC = () => ({
     type: GET_POSTS
@@ -13,6 +18,12 @@ export const setCurrentPageAC = (currentPage) => ({
     type: SET_CURRENT_PAGE,
     currentPage
 })
+
+export const setPortionNumberAC = (portionNumber) => ({
+    type: SET_PORTION_NUMBER,
+    portionNumber
+})
+
 
 
 

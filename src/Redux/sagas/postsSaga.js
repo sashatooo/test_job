@@ -5,12 +5,12 @@ import { GET_POSTS } from '../constants'
 
 
 function* fetchPosts() {
-    const response = yield call(getPosts)
+    const response =  yield call(getPosts)
     yield put(setPostsAC(response.data))
 }
 
 
 export function* postsWatcher() {
-    yield takeEvery(GET_POSTS, fetchPosts)
+    yield takeEvery(GET_POSTS, fetchPosts) 
 }
 
