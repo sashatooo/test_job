@@ -32,7 +32,6 @@ function Post(props: PostProps) {
 
     return (
         <>  
-            <div>{props.post.id}</div>
             <div>{props.post.title}</div>
             <div>{props.post.body}</div>
             <button onClick={() => onClickHendler(props.post.id)}>{showComments? 'Hide comments': 'Show comments'}</button>

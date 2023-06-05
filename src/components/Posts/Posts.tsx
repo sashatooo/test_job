@@ -4,7 +4,8 @@ import Post from '../Post/Post'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import { Image } from 'react-bootstrap'
+import { Image, Nav } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import Search from '../Search/Search'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPostsAC, setCurrentPageAC, setPortionNumberAC } from '../../Redux/actions/actonCreater'
@@ -76,9 +77,8 @@ function Posts() {
 		for(let i = leftBoundary; i < rightBoundary && i < tempFilteredPosts.length; i++) {
 			tempPosts.push(tempFilteredPosts[i]);
 		} 
-		console.log('2')
-		setShowPosts(tempPosts )
-	
+		setShowPosts(tempPosts)
+		// dispath(setCurrentPageAC()) бага
 	}
 
 	
@@ -92,7 +92,10 @@ function Posts() {
 					<Col key={idx}>
 						<Card className='m-2'>
 							<Card.Body>
-								<Image src='https://via.placeholder.com/150/771796' roundedCircle />
+								<Nav.Link as={Link} to={`/profile/${p.userId}`} >
+									<Image src='https://via.placeholder.com/150/771796' roundedCircle />
+								</Nav.Link>
+								
 								<Card.Title>{p.title}</Card.Title>
 								<Card.Text>
 									<Post key={p.id} post={p} />

@@ -1,3 +1,12 @@
+export const GET_PROFILE = 'GET_PROFILE'
+export const SET_PROFILE = 'SET_PROFILE'
+export const SET_PROFILES_POSTS = 'SET_PROFILES_POSTS'
+
+export const GET_USER = 'GET_USER'
+export const SET_USER = 'SET_USER'
+export const GET_AVATAR_PHOTO = 'GET_AVATAR_PHOTO'
+export const SET_AVATAR_PHOTO = 'SET_AVATAR_PHOTO'
+
 export const GET_POSTS = 'GET_POSTS' 
 export const SET_POSTS = 'SET_POSTS'
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'

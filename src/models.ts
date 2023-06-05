@@ -1,3 +1,12 @@
+export interface IAvatarPhoto {
+    albumId: number
+    id: number
+    title: string
+    url: string
+    thumbnailUrl: string
+    }
+
+
 export interface IPost {
     userId: number
     id: number
@@ -42,3 +51,4 @@ export interface IUser {
     website: string
     company: Company
 }
+
